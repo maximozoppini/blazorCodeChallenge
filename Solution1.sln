@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hq-blazor-code-challenge", "Blazor\hq-blazor-code-challenge.csproj", "{E4AED28A-003A-4309-9D39-A10E8FCDD7DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "Api\Api.csproj", "{BF523D73-B0EB-450A-B62F-41178D331690}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Classes", "Classes\Classes.csproj", "{241A6716-DEB5-462C-9BFA-D657C2CA8EA2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E4AED28A-003A-4309-9D39-A10E8FCDD7DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4AED28A-003A-4309-9D39-A10E8FCDD7DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4AED28A-003A-4309-9D39-A10E8FCDD7DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4AED28A-003A-4309-9D39-A10E8FCDD7DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF523D73-B0EB-450A-B62F-41178D331690}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF523D73-B0EB-450A-B62F-41178D331690}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF523D73-B0EB-450A-B62F-41178D331690}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF523D73-B0EB-450A-B62F-41178D331690}.Release|Any CPU.Build.0 = Release|Any CPU
+		{241A6716-DEB5-462C-9BFA-D657C2CA8EA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{241A6716-DEB5-462C-9BFA-D657C2CA8EA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{241A6716-DEB5-462C-9BFA-D657C2CA8EA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{241A6716-DEB5-462C-9BFA-D657C2CA8EA2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>hq_blazor_code_challenge</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Classes\Classes.csproj" />
+  </ItemGroup>
+
+</Project>

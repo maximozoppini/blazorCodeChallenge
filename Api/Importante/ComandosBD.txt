@@ -1,0 +1,14 @@
+AGREGAR MIGRACION
+Dentro de PM
+add-migration MyFirstMigration
+
+Dentro de CMD
+dotnet ef migrations add MyFirstMigration
+
+ACTUALIZAR BD
+Dentro de PM
+Update-Database
+
+Dentro de CMD
+dotnet ef database update
+ 
