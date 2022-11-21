@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Text.RegularExpressions;
 using Api.Models;
 using Api.Persistence;
 using Classes.DTO;
@@ -23,7 +24,7 @@ namespace Api.Business.Card_Business{
             public ExecuteValidation()
             {
                 RuleFor(x => x.CardHolder).NotEmpty().NotNull();
-                RuleFor(x => x.CardNumber).NotEmpty().NotNull();
+                RuleFor(x => x.CardNumber).NotEmpty().NotNull().Must(cardNumber => ValidateCardNumber(cardNumber));
                 RuleFor(x => x.CardExpMonth).NotEmpty().NotNull().GreaterThan(0).LessThanOrEqualTo(12).WithMessage("Card expiration month should be two positive digits");
                 RuleFor(x => x.CardExpYear).NotEmpty().NotNull().GreaterThan(0).LessThanOrEqualTo(99).WithMessage("Card expiration year should be two positive digits");
                 RuleFor(x => x.Ccv).NotEmpty().MinimumLength(3).MaximumLength(4).Must(ccv => int.TryParse(ccv, out var val) && val > 0).WithMessage("Credit card security code should be a number between 3 and 4 digits");
@@ -39,8 +40,24 @@ namespace Api.Business.Card_Business{
                     return false;
                 return year <= (DateTime.Now.Year % 100);
             }
-            
-            // public bool MasterCard
+
+            public bool ValidateCardNumber(string cardNumber)
+            {
+                string visaPattern = @"^4[0-9]{12}(?:[0-9]{3})?$";
+                string masterCardPattern = @"^(?:5[1-5][0-9]{2}|222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}$";
+                string amexPattern = @"^3[47][0-9]{13}$";
+                Match validationRegex = Regex.Match(cardNumber, visaPattern, RegexOptions.IgnoreCase);
+                if (!validationRegex.Success)
+                    return false;
+                validationRegex = Regex.Match(cardNumber, masterCardPattern, RegexOptions.IgnoreCase);
+                if (!validationRegex.Success)
+                    return false;
+                validationRegex = Regex.Match(cardNumber, amexPattern, RegexOptions.IgnoreCase);
+                if (!validationRegex.Success)
+                    return false;
+                
+                return true;
+            }
         }
 
         public class Mediator : IRequestHandler<CreateCardCommand, BaseResult>

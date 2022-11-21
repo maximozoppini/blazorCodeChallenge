@@ -2,6 +2,7 @@ using Api.Business.Card_Business;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Api.Persistence;
+using FluentValidation.AspNetCore;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddControllers().AddFluentValidation(cfg => cfg.RegisterValidatorsFromAssemblyContaining<CreateCard>());
 
 builder.Services.AddDbContext<ContextDB>(options =>
 {
