@@ -29,16 +29,27 @@ namespace Api.Business.Card_Business{
         {
             private readonly ContextDB _context;
             private readonly IMapper _mapper;
-            
-            public Mediator(ContextDB context, IMapper mapper)
+            private readonly IValidator<GetCardCommand> _validator;
+
+            public Mediator(ContextDB context, IMapper mapper, IValidator<GetCardCommand> validator)
             {
                 _context = context;
                 _mapper = mapper;
+                _validator = validator;
             }
 
             public async Task<CardsDTO> Handle(GetCardCommand request, CancellationToken cancellationToken)
             {
                 var result = new CardsDTO();
+                
+                
+                var validation = await _validator.ValidateAsync(request);
+                if (!validation.IsValid)
+                {
+                    var errors = string.Join(Environment.NewLine, validation.Errors);
+                    result.SetError(errors, HttpStatusCode.InternalServerError);
+                    return result;
+                }
                 try
                 {
                     var guidCard = new Guid(request.Guid);

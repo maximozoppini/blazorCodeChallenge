@@ -36,9 +36,11 @@ namespace Api.Business.Card_Business{
 
             public bool ExpirationDateValidator(int month, int year)
             {
-                if (month > (DateTime.Now.Month + 1))
+                if (year < (DateTime.Now.Year % 100))
+                {
                     return false;
-                return year <= (DateTime.Now.Year % 100);
+                }
+                return year != (DateTime.Now.Year % 100) || month >= (DateTime.Now.Month);
             }
 
             public bool ValidateCardNumber(string cardNumber)
@@ -63,15 +65,26 @@ namespace Api.Business.Card_Business{
         public class Mediator : IRequestHandler<CreateCardCommand, BaseResult>
         {
             private readonly ContextDB _context;
+            private readonly IValidator<CreateCardCommand> _validator;
             
-            public Mediator(ContextDB context)
+            public Mediator(ContextDB context, IValidator<CreateCardCommand> validator)
             {
                 _context = context;
+                _validator = validator;
             }
 
             public async Task<BaseResult> Handle(CreateCardCommand request, CancellationToken cancellationToken)
             {
                 var result = new BaseResult();
+
+                var validation = await _validator.ValidateAsync(request);
+                if (!validation.IsValid)
+                {
+                    var errors = string.Join(Environment.NewLine, validation.Errors);
+                    result.SetError(errors, HttpStatusCode.InternalServerError);
+                    return result;
+                }
+                
                 try
                 {
                     var card = new Card

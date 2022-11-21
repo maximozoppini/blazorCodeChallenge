@@ -1,4 +1,5 @@
 @page "/CreditCard"
+@using System.Globalization
 <h3>CreditCard</h3>
 
 
@@ -27,7 +28,7 @@
             </g>
           </svg>
         </div>
-        <div class="number"></div>
+        <div class="number">@_inputCardNumberLabel</div>
         <div class="card-holder">
           <label>Card holder</label>
           <div>@_inputCardHolder</div>
@@ -70,10 +71,7 @@
   <form class="form" autocomplete="off" novalidate>
     <fieldset>
       <label for="card-number">Card Number</label>
-      <input type="number" id="card-number" class="input-cart-number" maxlength="16" @bind="@_inputCardNumber" @bind:event="oninput"  />
-      @* <input type="number" id="card-number-1" class="input-cart-number" maxlength="4" /> *@
-      @* <input type="number" id="card-number-2" class="input-cart-number" maxlength="4" /> *@
-      @* <input type="number" id="card-number-3" class="input-cart-number" maxlength="4" /> *@
+      <input type="text" id="card-number" class="input-cart-number" maxlength="16" @bind="@_inputCardNumber" @bind:event="oninput"  />
     </fieldset>
     <fieldset>
       <label for="card-holder">Card holder</label>
@@ -81,37 +79,31 @@
     </fieldset>
     <fieldset class="fieldset-expiration">
       <label for="card-expiration-month">Expiration date</label>
+      
+
+
       <div class="select">
-        <select id="card-expiration-month">
-          <option></option>
-          <option>01</option>
-          <option>02</option>
-          <option>03</option>
-          <option>04</option>
-          <option>05</option>
-          <option>06</option>
-          <option>07</option>
-          <option>08</option>
-          <option>09</option>
-          <option>10</option>
-          <option>11</option>
-          <option>12</option>
+        <select id="card-expiration-month" @bind="@_cardExpirationMonth">
+          @if (@_cardExpirationMonths != null)
+          {
+            @for (int i = 0; i < @_cardExpirationMonths.Count(); i++)
+            {
+              <option value="@i">@_cardExpirationMonths[i]</option>
+            }
+          }
         </select>
       </div>
       <div class="select">
-        <select id="card-expiration-year">
-          <option></option>
-          <option>2016</option>
-          <option>2017</option>
-          <option>2018</option>
-          <option>2019</option>
-          <option>2020</option>
-          <option>2021</option>
-          <option>2022</option>
-          <option>2023</option>
-          <option>2024</option>
-          <option>2025</option>
-        </select>
+        <select id="card-expiration-year" @bind="@_cardExpirationYear">
+                  @if (@_cardExpirationYears != null)
+                  {
+                    @for (int i = 0; i < @_cardExpirationYears.Count(); i++)
+                    {
+                      <option value="@i">@_cardExpirationYears[i]</option>
+                    }
+                  }
+                </select>
+        
       </div>
     </fieldset>
     <fieldset class="fieldset-ccv">
@@ -126,5 +118,26 @@
 @code {
   private string _inputCardNumber { get; set; }
   private string _inputCardHolder { get; set; }
+  private string _inputCardNumberLabel
+  {
+    get { return string.Join(' ', _inputCardNumber.Chunk(size: 4).Select(x => new string(x))); }
+  }
   
+  private string _cardExpirationMonth { get; set; } = "";
+  private List<string> _cardExpirationMonths { get; set; } = new List<string>();
+  private string _cardExpirationYear { get; set; } = "";
+  private List<string> _cardExpirationYears { get; set; } = new List<string>();
+  
+  protected override async Task OnInitializedAsync()
+  {
+    _inputCardNumber = "";
+    int actualYear = DateTime.Now.Year;
+    for (int  i = 0;  i < 12;  i++)
+    {
+      _cardExpirationMonths.Add((i+1).ToString("D2"));
+      _cardExpirationYears.Add(((actualYear+i)% 100).ToString());
+    }
+    
+    
+  }
 }

@@ -12,7 +12,7 @@ namespace Classes.CustomExceptions;
             : base(message) { }
 
         public ApiCallException(string message, HttpStatusCode statusCode)
-            : base(statusCode.ToString() + " - " + message)
+            : base(statusCode + " - " + message)
         {
             _statusCode = statusCode;
         }

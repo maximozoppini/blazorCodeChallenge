@@ -21,7 +21,7 @@ namespace Api.Business.Card_Business{
         {
             private readonly ContextDB _context;
             private readonly IMapper _mapper;
-            
+
             public Mediator(ContextDB context, IMapper mapper)
             {
                 _context = context;
