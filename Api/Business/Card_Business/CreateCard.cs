@@ -23,11 +23,11 @@ namespace Api.Business.Card_Business{
         {
             public ExecuteValidation()
             {
-                RuleFor(x => x.CardHolder).NotEmpty().NotNull();
-                RuleFor(x => x.CardNumber).NotEmpty().NotNull().Must(cardNumber => ValidateCardNumber(cardNumber));
-                RuleFor(x => x.CardExpMonth).NotEmpty().NotNull().GreaterThan(0).LessThanOrEqualTo(12).WithMessage("Card expiration month should be two positive digits");
-                RuleFor(x => x.CardExpYear).NotEmpty().NotNull().GreaterThan(0).LessThanOrEqualTo(99).WithMessage("Card expiration year should be two positive digits");
-                RuleFor(x => x.Ccv).NotEmpty().MinimumLength(3).MaximumLength(4).Must(ccv => int.TryParse(ccv, out var val) && val > 0).WithMessage("Credit card security code should be a number between 3 and 4 digits");
+                RuleFor(x => x.CardHolder).NotEmpty().NotNull().WithMessage("Card holder is required");
+                RuleFor(x => x.CardNumber).NotEmpty().NotNull().WithMessage("Card number is required").Must(cardNumber => ValidateCardNumber(cardNumber)).WithMessage("Card number not correspond to VISA, MASTERCARD or AMEX");
+                RuleFor(x => x.CardExpMonth).NotEmpty().NotNull().WithMessage("Card expiration month is required").GreaterThan(0).LessThanOrEqualTo(12).WithMessage("Card expiration month should be two positive digits");
+                RuleFor(x => x.CardExpYear).NotEmpty().NotNull().WithMessage("Card expiration year is required").GreaterThan(0).LessThanOrEqualTo(99).WithMessage("Card expiration year should be two positive digits");
+                RuleFor(x => x.Ccv).NotEmpty().MinimumLength(3).WithMessage("Card CVV is required").MaximumLength(4).Must(ccv => int.TryParse(ccv, out var val) && val > 0).WithMessage("Credit card security code should be a number between 3 and 4 digits");
                 RuleFor(x => x.Type).NotEmpty();
                 
                 RuleFor(m => new {m.CardExpMonth, m.CardExpYear}).Must(x => ExpirationDateValidator(x.CardExpMonth, x.CardExpYear))
@@ -49,16 +49,16 @@ namespace Api.Business.Card_Business{
                 string masterCardPattern = @"^(?:5[1-5][0-9]{2}|222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}$";
                 string amexPattern = @"^3[47][0-9]{13}$";
                 Match validationRegex = Regex.Match(cardNumber, visaPattern, RegexOptions.IgnoreCase);
-                if (!validationRegex.Success)
-                    return false;
+                if (validationRegex.Success)
+                    return true;
                 validationRegex = Regex.Match(cardNumber, masterCardPattern, RegexOptions.IgnoreCase);
-                if (!validationRegex.Success)
-                    return false;
+                if (validationRegex.Success)
+                    return true;
                 validationRegex = Regex.Match(cardNumber, amexPattern, RegexOptions.IgnoreCase);
-                if (!validationRegex.Success)
-                    return false;
+                if (validationRegex.Success)
+                    return true;
                 
-                return true;
+                return false;
             }
         }
 

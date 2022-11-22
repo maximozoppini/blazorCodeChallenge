@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
@@ -10,6 +11,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using hq_blazor_code_challenge.Data;
+using hq_blazor_code_challenge.Interfaces;
+using hq_blazor_code_challenge.Interfaces.Card;
+using hq_blazor_code_challenge.Services;
+using hq_blazor_code_challenge.Services.Card;
 
 namespace hq_blazor_code_challenge
 {
@@ -29,6 +34,10 @@ namespace hq_blazor_code_challenge
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
+            services.AddScoped<ICardService, CardService>();
+            services.AddScoped<IApiCalls, ApiCalls>();
+            services.AddScoped(sp => new HttpClient());
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -9,7 +9,7 @@ public class CardItem
 {
     public Guid Id { get; set; }
     public string CardHolder { get; set; }
-    public int CardNumber { get; set; }
+    public string CardNumber { get; set; }
     public int CardExpMonth { get; set; }
     public int CardExpYear { get; set; }
     public int Ccv { get; set; }

@@ -1,46 +1,41 @@
-﻿@page "/fetchdata"
+﻿@page "/cards"
 
-@using hq_blazor_code_challenge.Data
-@inject WeatherForecastService ForecastService
+@using hq_blazor_code_challenge.Interfaces.Card
+@using Classes.DTO.Card
+@inject ICardService CardService
 
-<h1>Weather forecast</h1>
+<h1>Cards</h1>
 
-<p>This component demonstrates fetching data from a service.</p>
+<p>Cards found in the database</p>
 
-@if (forecasts == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <table class="table">
-         <thead>
-            <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forecast in forecasts)
-            {
-                <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+<table class="table">
+    <thead>
+    <tr>
+        <th>Holder</th>
+        <th>Number</th>
+        <th>Exp Month</th>
+        <th>Exp Year</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var card in model.Cards)
+    {
+        <tr>
+            <td>@card.CardHolder</td>
+            <td>@card.CardNumber</td>
+            <td>@card.CardExpMonth</td>
+            <td>@card.CardExpYear</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
 
 @code {
-    private WeatherForecast[] forecasts;
+    private CardsDTO model { get; set; } = new CardsDTO();
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+        model = await CardService.GetCards();
     }
 }
