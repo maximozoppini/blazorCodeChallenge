@@ -29,7 +29,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Importante\" />
     <Folder Include="Migrations" />
   </ItemGroup>
 
